@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Dancing+Script:wght@600&family=Inter:wght@300&family=Pacifico&family=Ubuntu:wght@300&display=swap');
 
 html, body {
     height: 100%;
@@ -9,6 +10,7 @@ html, body {
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: Caveat;
 }
 
 .flex {
