@@ -1,12 +1,15 @@
 
 <section class="chain-reaction flex">
-    <h1>Chain reaction</h1>
+    <h1 class="app-title">Chain reaction</h1>
     <section class="board flex">
         <section *ngFor="let row of boardService.getBoard(); let i=index;" class="board__row flex">
             <ng-container *ngFor="let cell of row; let j=index">
                 <app-cell class="board__cell flex" [ngStyle]="{'border-color': boardService.getActivePlayerColor()}" (makeMove)="makeMove(i, j)" [cell]="cell"></app-cell>
             </ng-container>
         </section>
-        <h1 *ngIf="boardService.isMatchCompleted()">Match completed</h1>
+        <div class="board__reset-result flex" >
+            <h3 *ngIf="boardService.isMatchCompleted()">Match completed</h3>
+            <button (click)="boardService.resetMatch()">Reset match</button>
+        </div>
     </section>
 </section>

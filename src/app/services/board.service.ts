@@ -17,12 +17,16 @@ export class BoardService {
   private players: Player[];
 
   constructor() { 
+    this.resetMatch();
+  }
+
+  resetMatch() {
     this.board = [];
     this.activePlayerIndex = 0;
     this.players = [];
     this._isMatchCompleted = false;
     this.setPlayersCount(2);
-    this.initializeBoard();    
+    this.initializeBoard();
   }
 
   private initializeBoard() {
