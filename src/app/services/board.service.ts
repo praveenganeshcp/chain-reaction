@@ -60,9 +60,18 @@ export class BoardService {
 
   makeMove(xPos: number, yPos: number) {
     if(!this.isMatchCompleted()) {
-      const activeCell = this.getCell(xPos, yPos);
-      const cellColor = activeCell.isEmpty() ? this.getActivePlayer().getColor() : activeCell.getColor();
-      this.triggerChainReaction(xPos, yPos, cellColor);
+      const cell = this.getCell(xPos, yPos);
+      let cellFillColor;
+      if(cell.isEmpty()) {
+        cellFillColor = this.getActivePlayer().getColor();
+      }
+      else {
+        cellFillColor = cell.getColor();
+      }
+      if(!cell.isEmpty() && cell.getColor() != this.getActivePlayer().getColor()) {
+        return;
+      }
+      this.triggerChainReaction(xPos, yPos, cellFillColor);
       this.togglePlayerTurn();
     }
   }
