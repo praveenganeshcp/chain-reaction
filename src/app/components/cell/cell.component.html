@@ -1,0 +1,3 @@
+<div class="board-cell flex" (click)="makeMove.emit()">
+    <p class="atom" [ngStyle]="{'background-color': cell.getColor()}" *ngFor="let color of getColorArray()"></p>
+</div>
