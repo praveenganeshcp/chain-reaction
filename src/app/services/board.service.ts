@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BOARD_SIZE, Cell } from '../models/cell';
+import { ROW_SIZE, COL_SIZE, Cell } from '../models/cell';
 import { CornerCell } from '../models/corner-cell';
 import { EdgeCell } from '../models/edge-cell';
 import { MiddleCell } from '../models/middle-cell';
@@ -26,13 +26,13 @@ export class BoardService {
   }
 
   private initializeBoard() {
-    for(let i=0; i<this.getBoardSize(); i++) {
+    for(let i=0; i<this.getBoardRowSize(); i++) {
       this.board.push([]);
-      for(let j=0; j<this.getBoardSize(); j++) {
-        if( (i === 0 && j === 0) || (i === 0 && j === this.getBoardSize()-1) || (i === this.getBoardSize()-1 && j === 0) || (i === this.getBoardSize()-1 && j === this.getBoardSize()-1) ) {
+      for(let j=0; j<this.getBoardColumnSize(); j++) {
+        if( (i === 0 && j === 0) || (i === 0 && j === this.getBoardColumnSize()-1) || (i === this.getBoardRowSize()-1 && j === 0) || (i === this.getBoardRowSize()-1 && j === this.getBoardColumnSize()-1) ) {
           this.board[i][j] = new CornerCell(i, j);
         }
-        else if(i === 0 || i === this.getBoardSize()-1 || j === 0 || j === this.getBoardSize()-1) {
+        else if(i === 0 || i === this.getBoardRowSize()-1 || j === 0 || j === this.getBoardColumnSize()-1) {
           this.board[i][j] = new EdgeCell(i, j);
         }
         else {
@@ -152,8 +152,12 @@ export class BoardService {
     }
   }
 
-  private getBoardSize() {
-    return BOARD_SIZE;
+  private getBoardRowSize() {
+    return ROW_SIZE;
+  }
+
+  private getBoardColumnSize() {
+    return COL_SIZE;
   }
 
   private togglePlayerTurn() {

@@ -1,4 +1,5 @@
-export const BOARD_SIZE = 7;
+export const ROW_SIZE = 7;
+export const COL_SIZE = 8;
 
 export abstract class Cell {
 	private xPosition: number
@@ -73,15 +74,15 @@ export abstract class Cell {
     }
 	
 	isCorner(): boolean {
-        return (this.getXPosition() === 0 && this.getYPosition() === 0) || (this.getXPosition() === BOARD_SIZE && this.getYPosition() === 0) || (this.getXPosition() === 0 && this.getYPosition() === BOARD_SIZE) || (this.getXPosition() === BOARD_SIZE && this.getYPosition() === BOARD_SIZE);
+        return this.isTopLeftCorner() || this.isTopRightCorner() || this.isBottomLeftCorner() || this.isBottomRightCorner();
     }
 
 	isEdge(): boolean {
-        return this.getXPosition() === 0 || this.getXPosition() === BOARD_SIZE || this.getYPosition() === 0 || this.getYPosition() === BOARD_SIZE;
+        return this.isBottomEdge() || this.isTopEdge() || this.isLeftEdge() || this.isRightEdge();
     }
 
 	isMiddle(): boolean {
-        return this.getXPosition() !== 0 && this.getXPosition() !== BOARD_SIZE && this.getYPosition() !== 0 && this.getYPosition() !== BOARD_SIZE;
+        return this.isCorner() == false && this.isEdge() === false;
     }
 
 	isTopLeftCorner(): boolean {
@@ -89,15 +90,15 @@ export abstract class Cell {
     }
 
 	isTopRightCorner(): boolean {
-        return this.getXPosition() === 0 && this.getYPosition() === BOARD_SIZE;
+        return this.getXPosition() === 0 && this.getYPosition() === COL_SIZE-1;
     }
 
 	isBottomLeftCorner(): boolean {
-        return this.getXPosition() === BOARD_SIZE && this.getYPosition() === 0;
+        return this.getXPosition() === ROW_SIZE-1 && this.getYPosition() === 0;
     }
 
 	isBottomRightCorner(): boolean {
-        return this.getXPosition() === BOARD_SIZE && this.getYPosition() === BOARD_SIZE;
+        return this.getXPosition() === ROW_SIZE-1 && this.getYPosition() === COL_SIZE-1;
     }
 
 	isTopEdge(): boolean {
@@ -109,10 +110,10 @@ export abstract class Cell {
     }
 
 	isRightEdge(): boolean {
-        return this.getYPosition() === BOARD_SIZE;
+        return this.getYPosition() === COL_SIZE-1;
     }
 
 	isBottomEdge(): boolean {
-        return this.getXPosition() === BOARD_SIZE;
+        return this.getXPosition() === ROW_SIZE-1;
     }
 }
