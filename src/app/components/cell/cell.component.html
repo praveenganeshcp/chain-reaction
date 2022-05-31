@@ -1,3 +1,5 @@
-<div class="board-cell flex" (click)="makeMove.emit()">
-    <p class="atom" [ngStyle]="{'background-color': cell.getColor()}" *ngFor="let color of getColorArray()"></p>
+<div class="board-cell flex" [class.animate-cell]="cell.getCount() > 0" (click)="makeMove.emit()">
+    <div class="atom" [class.move-left]="cell.getCount() == 3" [class.cell1]="cell.getCount() >= 2" *ngIf="cell.getCount() > 0" [ngStyle]="{'background-color': cell.getColor()}"></div>
+    <div class="atom" [class.move-left]="cell.getCount() == 3" [class.cell2]="cell.getCount() >= 2" *ngIf="cell.getCount() > 1" [ngStyle]="{'background-color': cell.getColor()}"></div>
+    <div class="atom" [class.move-left]="cell.getCount() == 3" [class.cell3]="cell.getCount() == 3" *ngIf="cell.getCount() > 2" [ngStyle]="{'background-color': cell.getColor()}"></div>
 </div>

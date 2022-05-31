@@ -1,9 +1,33 @@
 .board-cell {
     height: 100%;
     width: 100%;
+    position: relative;
+}
+@keyframes rotate-atoms {
+    from { transform: rotate(0deg);}
+    to { transform: rotate(360deg);}
+}
+.animate-cell {
+    animation-name: rotate-atoms;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 .atom {
     height: 40%;
     width: 20%;
     border-radius: 50%;
+    position: absolute;
+}
+.cell1 {
+    top: 16%;
+}
+.cell2 {
+    bottom: 16%;
+}
+.cell3 {
+    left: 28%;
+}
+.move-left {
+    padding-right: 20%;
 }
