@@ -3,6 +3,7 @@ import { BOARD_SIZE, Cell } from '../models/cell';
 import { CornerCell } from '../models/corner-cell';
 import { EdgeCell } from '../models/edge-cell';
 import { MiddleCell } from '../models/middle-cell';
+import { Move } from '../models/move';
 import { Player } from '../models/player';
 
 @Injectable({
@@ -58,9 +59,9 @@ export class BoardService {
     return activePlayer;
   }
 
-  makeMove(xPos: number, yPos: number) {
+  makeMove(move: Move) {
     if(!this.isMatchCompleted()) {
-      const cell = this.getCell(xPos, yPos);
+      const cell = this.getCell(move.getX(), move.getY());
       let cellFillColor;
       if(cell.isEmpty()) {
         cellFillColor = this.getActivePlayer().getColor();
@@ -71,7 +72,7 @@ export class BoardService {
       if(!cell.isEmpty() && cell.getColor() != this.getActivePlayer().getColor()) {
         return;
       }
-      this.triggerChainReaction(xPos, yPos, cellFillColor);
+      this.triggerChainReaction(move, cellFillColor);
       this.togglePlayerTurn();
     }
   }
@@ -80,57 +81,57 @@ export class BoardService {
     return this.getBoard()[xPos][yPos];
   }
 
-  private triggerChainReaction(xPos: number, yPos: number, color: string) {
-    const cell = this.getCell(xPos, yPos);
-    cell.setColor(color);
+  private triggerChainReaction(move: Move, fillColor: string) {
+    const cell = this.getCell(move.getX(), move.getY());
+    cell.setColor(fillColor);
     cell.incrementCount();
     if(cell.reachedThreshold()) {
       cell.makeEmpty();
       if(cell.isCorner()) {
         if(cell.isTopLeftCorner()) {
-          this.triggerChainReaction(xPos+1, yPos, color);
-          this.triggerChainReaction(xPos, yPos+1, color);
+          this.triggerChainReaction(move.toBelowCell(), fillColor);
+          this.triggerChainReaction(move.toRightCell(), fillColor);
         }
         else if(cell.isTopRightCorner()) {
-          this.triggerChainReaction(xPos, yPos-1, color);
-          this.triggerChainReaction(xPos+1, yPos, color);
+          this.triggerChainReaction(move.toBelowCell(), fillColor);
+          this.triggerChainReaction(move.toLeftCell(), fillColor);
         }
         else if(cell.isBottomLeftCorner()) {
-          this.triggerChainReaction(xPos-1, yPos, color);
-          this.triggerChainReaction(xPos, yPos+1, color);
+          this.triggerChainReaction(move.toAboveCell(), fillColor);
+          this.triggerChainReaction(move.toRightCell(), fillColor);
         }
         else if(cell.isBottomRightCorner()) {
-          this.triggerChainReaction(xPos-1, yPos, color);
-          this.triggerChainReaction(xPos, yPos-1, color);
+          this.triggerChainReaction(move.toAboveCell(), fillColor);
+          this.triggerChainReaction(move.toLeftCell(), fillColor);
         }
       }
       else if(cell.isEdge()) {
         if(cell.isTopEdge()) {
-          this.triggerChainReaction(xPos, yPos-1, color);
-          this.triggerChainReaction(xPos+1, yPos, color);
-          this.triggerChainReaction(xPos, yPos+1, color);
+          this.triggerChainReaction(move.toLeftCell(), fillColor);
+          this.triggerChainReaction(move.toRightCell(), fillColor);
+          this.triggerChainReaction(move.toBelowCell(), fillColor);
         }
         else if(cell.isBottomEdge()) {
-          this.triggerChainReaction(xPos, yPos-1, color);
-          this.triggerChainReaction(xPos, yPos+1, color);
-          this.triggerChainReaction(xPos-1, yPos, color);
+          this.triggerChainReaction(move.toLeftCell(), fillColor);
+          this.triggerChainReaction(move.toRightCell(), fillColor);
+          this.triggerChainReaction(move.toAboveCell(), fillColor);
         }
         else if(cell.isLeftEdge()) {
-          this.triggerChainReaction(xPos-1, yPos, color);
-          this.triggerChainReaction(xPos+1, yPos, color);
-          this.triggerChainReaction(xPos, yPos+1, color);
+          this.triggerChainReaction(move.toAboveCell(), fillColor);
+          this.triggerChainReaction(move.toBelowCell(), fillColor);
+          this.triggerChainReaction(move.toRightCell(), fillColor);
         }
         else if(cell.isRightEdge()) {
-          this.triggerChainReaction(xPos-1, yPos, color);
-          this.triggerChainReaction(xPos+1, yPos, color);
-          this.triggerChainReaction(xPos, yPos-1, color);
+          this.triggerChainReaction(move.toAboveCell(), fillColor);
+          this.triggerChainReaction(move.toBelowCell(), fillColor);
+          this.triggerChainReaction(move.toLeftCell(), fillColor);
         }
       }
       else {
-        this.triggerChainReaction(xPos-1, yPos, color);
-        this.triggerChainReaction(xPos+1, yPos, color);
-        this.triggerChainReaction(xPos, yPos-1, color);
-        this.triggerChainReaction(xPos, yPos+1, color);
+        this.triggerChainReaction(move.toAboveCell(), fillColor);
+        this.triggerChainReaction(move.toBelowCell(), fillColor);
+        this.triggerChainReaction(move.toLeftCell(), fillColor);
+        this.triggerChainReaction(move.toRightCell(), fillColor);
       }
       this.checkIfMatchIsCompleted();
     }

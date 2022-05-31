@@ -15,5 +15,21 @@ export class Move {
         return this.y;
     }
 
+    toRightCell() {
+        return new Move(this.getX(), this.getY()+1);
+    }
+
+    toLeftCell() {
+        return new Move(this.getX(), this.getY()-1);
+    }
+
+    toAboveCell() {
+        return new Move(this.getX()-1, this.getY());
+    }
+
+    toBelowCell() {
+        return new Move(this.getX()+1, this.getY());
+    }
+
 }
     

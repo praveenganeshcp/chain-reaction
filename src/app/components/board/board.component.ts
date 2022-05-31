@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Move } from 'src/app/models/move';
 import { BoardService } from 'src/app/services/board.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class BoardComponent implements OnInit {
 
   makeMove(xPos: number, yPos: number) {
     console.log(xPos, yPos);
-    this.boardService.makeMove(xPos, yPos);
+    this.boardService.makeMove(new Move(xPos, yPos));
   }
 
 }
